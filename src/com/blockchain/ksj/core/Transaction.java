@@ -4,7 +4,7 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.ArrayList;
 
-import com.blockchain.ksj.main.OpenChain;
+import com.blockchain.ksj.main.MyBlockChain;
 import com.blockchain.ksj.util.StringUtil;
 
 
@@ -60,11 +60,11 @@ public class Transaction {
 					
 			//gather transaction inputs (Make sure they are unspent):
 			for(TransactionInput i : inputs) {
-				i.UTXO = OpenChain.UTXOs.get(i.transactionOutputId);
+				i.UTXO = MyBlockChain.UTXOs.get(i.transactionOutputId);
 			}
 
 			//check if transaction is valid:
-			if(getInputsValue() < OpenChain.minimumTransaction) {
+			if(getInputsValue() < MyBlockChain.minimumTransaction) {
 				System.out.println("#Transaction Inputs to small: " + getInputsValue());
 				return false;
 			}
@@ -77,13 +77,13 @@ public class Transaction {
 					
 			//add outputs to Unspent list
 			for(TransactionOutput o : outputs) {
-				OpenChain.UTXOs.put(o.id , o);
+				MyBlockChain.UTXOs.put(o.id , o);
 			}
 			
 			//remove transaction inputs from UTXO lists as spent:
 			for(TransactionInput i : inputs) {
 				if(i.UTXO == null) continue; //if Transaction can't be found skip it 
-				OpenChain.UTXOs.remove(i.UTXO.id);
+				MyBlockChain.UTXOs.remove(i.UTXO.id);
 			}
 			
 			return true;

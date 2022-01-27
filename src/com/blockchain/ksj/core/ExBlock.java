@@ -1,5 +1,6 @@
 package com.blockchain.ksj.core;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import com.blockchain.ksj.util.ExStringUtil;
@@ -9,9 +10,10 @@ public class ExBlock {
 
 	public String hash;			/* 해시값 */
 	public String previousHash;	/* 이전 블럭의 해시값 */
-	private String data; 		/* 블럭의 data */
+	//private String data; 		/* 블럭의 data */
+	public ArrayList<ExTransaction> transactions = new ArrayList<ExTransaction>(); //our data will be a simple message.
 	private long timestamp; 	/* timestamp */
-
+	public String merkleRoot;
 	private int nonce;
 	
 	/**
@@ -20,8 +22,8 @@ public class ExBlock {
 	 * @param data
 	 * @param previousHash
 	 */
-	public ExBlock(String data, String previousHash ) {
-		this.data = data;
+	public ExBlock(String previousHash ) {
+		//this.data = data;
 		this.previousHash = previousHash;
 		this.timestamp = new Date().getTime();
 		this.hash = calculateHash();	//생성시 먼저 hash 값을 하나 만들어 넣어둡니다.
@@ -37,7 +39,8 @@ public class ExBlock {
 				previousHash 
 				+Long.toString(timestamp) 
 				+Integer.toString(nonce) 
-				+data 
+				+merkleRoot
+				//+data 
 				);
 		return calculatedhash;
 	}
@@ -49,6 +52,7 @@ public class ExBlock {
 	 */
 	//블럭안의 변수들 값의 해시값들이 특정 자릿수(the number of 0's)로 시작할때까지 시도
 	public void mineBlock(int difficulty) {
+		merkleRoot = ExStringUtil.getMerkleRoot(transactions);
 		//간단한 테스트와 이해를 돕기위해 target을 difficulty 숫자 만큼 앞에 0으로 채웁니다.
 		String target = new String(new char[difficulty]).replace('\0', '0');
 		
@@ -62,5 +66,20 @@ public class ExBlock {
 			//System.out.printf("\nGEN Hash #%d : %s", nonce, hash);
 		}
 		System.out.println("\n채굴 성공!!! : " + hash+"\n");
+	}
+	
+	//Add transactions to this block
+	public boolean addTransaction(ExTransaction transaction) {
+		//process transaction and check if valid, unless block is genesis block then ignore.
+		if(transaction == null) return false;
+		if((previousHash !="0")) {
+			if((transaction.processTransaction() != true)) {
+				System.out.println("Transaction failed to process. Discarded.");
+				return false;
+			}
+		}
+		transactions.add(transaction);
+		System.out.println("Transaction Successfully added to Block");
+		return true;
 	}
 }

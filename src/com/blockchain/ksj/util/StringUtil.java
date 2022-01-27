@@ -7,7 +7,6 @@ import java.security.PublicKey;
 import java.security.Signature;
 import java.util.Base64;
 
-
 public class StringUtil {
 	public static String applySha256(String input) {
 		try {

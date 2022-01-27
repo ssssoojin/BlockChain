@@ -17,10 +17,11 @@ import com.google.gson.GsonBuilder;
  * @author comnic
  *
  */
-public class OpenChain {
+public class MyBlockChain {
 
 	//blockchain ArrayList
 	public static ArrayList<Block> blockchain = new ArrayList<Block>();
+	//사용되지 않은 트랜잭션의 추가 컬랙션
 	public static HashMap<String, TransactionOutput> UTXOs = new HashMap<String, TransactionOutput>(); //list of all unspent transactions.
 	
 	//difficulty - 숫자가 클수록 어렵다. target생성 규칙상.
