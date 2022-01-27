@@ -1,7 +1,7 @@
 package com.blockchain.ksj.util;
 
 import java.security.Key;
-import java.security.MessageDigest;
+import java.security.MessageDigest; //sha256 알고리즘에 사용에 필요
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Signature;

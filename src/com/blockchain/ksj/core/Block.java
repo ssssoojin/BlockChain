@@ -25,6 +25,7 @@ public class Block {
 		this.previousHash = previousHash;
 		this.timestamp = new Date().getTime();
 		this.hash = calculateHash();	//생성시 먼저 hash 값을 하나 만들어 넣어둡니다.
+	
 	}
 	
 	/**
@@ -33,10 +34,10 @@ public class Block {
 	 */
 	public String calculateHash() {
 		String calculatedhash = StringUtil.applySha256( 
-				previousHash +
-				Long.toString(timestamp) +
-				Integer.toString(nonce) + 
-				data 
+				previousHash 
+				+Long.toString(timestamp) 
+				+Integer.toString(nonce) 
+				+data 
 				);
 		return calculatedhash;
 	}
@@ -46,6 +47,7 @@ public class Block {
 	 * 
 	 * @param difficulty
 	 */
+	//블럭안의 변수들 값의 해시값들이 특정 자릿수(the number of 0's)로 시작할때까지 시도
 	public void mineBlock(int difficulty) {
 		//간단한 테스트와 이해를 돕기위해 target을 difficulty 숫자 만큼 앞에 0으로 채웁니다.
 		String target = new String(new char[difficulty]).replace('\0', '0');
@@ -59,6 +61,6 @@ public class Block {
 			
 			//System.out.printf("\nGEN Hash #%d : %s", nonce, hash);
 		}
-		System.out.println("\n채굴 성공!!! : " + hash);
+		System.out.println("\n채굴 성공!!! : " + hash+"\n");
 	}
 }
