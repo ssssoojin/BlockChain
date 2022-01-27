@@ -2,7 +2,7 @@ package com.blockchain.ksj.core;
 
 import java.util.Date;
 
-import com.blockchain.ksj.util.StringUtil;
+import com.blockchain.ksj.util.ExStringUtil;
 
 
 public class ExBlock {
@@ -33,7 +33,7 @@ public class ExBlock {
 	 * @return
 	 */
 	public String calculateHash() {
-		String calculatedhash = StringUtil.applySha256( 
+		String calculatedhash = ExStringUtil.applySha256( 
 				previousHash 
 				+Long.toString(timestamp) 
 				+Integer.toString(nonce) 
